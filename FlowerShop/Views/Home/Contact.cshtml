@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+  
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Flower Shop Home Page</title>
+    <link rel="stylesheet" href="../../Content/projectonestyle.css">
+</head>
+<body>
+    <div class="page-body">
+        <header class="background-image">
+        </header>
+
+        <div class="nav" style="display: flex; justify-content: right; flex-wrap: wrap;">
+            <p class="nav-bar" >
+                <a href="http://localhost:51403/Home/Register" style="text-decoration: underline;">Register</a>
+                <a href="http://localhost:51403/Home/Contact" style="text-decoration: underline;">Contact Us</a>
+                <a href="http://localhost:51403/Home/Legal" style="text-decoration: underline;">Legal</a>
+                <a href="http://localhost:51403/Home/AboutUs" style="text-decoration: underline;">About Us</a>
+                <a href="http://localhost:51403/Home/ProjectOne" style="text-decoration: underline;">Home</a>
+            </p>
+        </div>
+
+        <div class="container" style=" display: grid; grid-template-columns: auto auto; grid-gap: 20px; margin-top: 20px; ">
+
+
+
+
+
+            <div class="left-column">
+
+                <div class="flower-category"><strong>@ViewBag.Message</strong></div>
+                <div><strong>Main Store and Distribution Center</strong></div>
+
+                <ul style="list-style: none;">
+                    <li>Our store is located at:</li>
+                    <li>Will's Flower Shop'</li>
+                    <li>W525 Country Road ABC</li>
+                    <li>Indianapolis, IN 46278</li>
+                    <li>Phone Number:(317)-555-1212</li>
+                </ul>
+
+                <div><strong>Email</strong></div>
+                <p>We can be reached via email at hiflyers@flowershop.com. We promise a response with 24 business hours.</p>
+
+            </div>
+            <div class="right-column" style="height: 50px;">
+                <div class="search-display">
+                    <p>Follow us on <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F" style="color: darkred;">Facebook</a> and <a href="https://x.com/" style="color: darkred;">Twitter</a></p>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+
+    </div>
+    <div class="footer">
+        <a href="http://localhost:51403/Home/Contact">Contact Us</a>
+    </div>
+</body>
+</html>

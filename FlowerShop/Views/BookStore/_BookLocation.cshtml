@@ -1,0 +1,64 @@
+﻿@using System.Globalization
+@{
+    var title = Request.QueryString["title"] ?? "Unknown Title";
+    var type = Request.QueryString["type"] ?? "Unknown Type";
+    var price = Request.QueryString["price"] ?? "$0.00";
+    var paperback = Request.QueryString["paperback"] ?? "False";
+    var publisher = Request.QueryString["publisher"] ?? "Unknown Publisher";
+    var bookCode = Request.QueryString["bookCode"] ?? "Unknown Code";
+    var writtenBy = Request.QueryString["writtenBy"] ?? "Unknown Author";
+    var locations = Request.QueryString["location"]?.Split(',') ?? new string[] { "Unknown Location" };
+    var onHand = Request.QueryString["onHand"]?.Split(',') ?? new string[] { "0" };
+    String LocationLinkNameMethod(String LocationName)
+    {
+        String LocationID = null;
+      
+        if (LocationName == "Henry Downtown")
+        {
+            LocationID = "1";
+        }
+        else if (LocationName == "Henry On The Hill")
+        {
+            LocationID = "2";
+        }
+        else if (LocationName == "Henry Brentwood")
+        {
+            LocationID = "3";
+        }
+        else if (LocationName == "Henry Eastshore")
+        {
+            LocationID = "4";
+        }
+        return "http://localhost:51403/BookStore/Location?selectedBranch="+LocationID;
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body style="text-align:left">
+    <div style="background-color: #e1dec8; padding: 10px; width: 300px; border: 1px solid #777;">
+        <h3>Inventory by Location</h3>
+        <table style="border: 1px solid #777; width: 100%;">
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>On Hand Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < locations.Length; i++)
+                {
+                    <tr>
+                        <td><a href="@LocationLinkNameMethod(locations[i])">@locations[i]</a></td>
+                        <td>@onHand[i]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

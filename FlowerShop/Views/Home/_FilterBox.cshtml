@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("ProjectOne", "Home", FormMethod.Get))
+        {
+            <p><strong>Search Flower Names</strong></p>
+            <p><input type="text" name="searchTerm" value="@Request.QueryString["searchTerm"]" /></p>
+            if (ViewBag.SearchError != null)
+            {
+                <p style="color:red;">• @ViewBag.SearchError</p>
+            }
+            <input class="search-button" type="submit" name="buttonType" value="Search" />
+            <p><strong>Filter Products</strong></p>
+            <div>
+                <label class="filter-item" for="color">Color:</label>
+                @Html.DropDownList("color", new SelectList(new[] { "Please Select a Color", "Blue", "Red", "Yellow" }, Request.QueryString["color"]))
+            </div>
+            <div>
+                <label class="filter-item" for="size">Size:</label>
+                @Html.DropDownList("size", new SelectList(new[] { "Please Select a Size", "Small", "Medium", "Large" }, Request.QueryString["size"]))
+            </div>
+            <div>
+                <label class="filter-item" for="fromPrice">Price:</label><label for="toPrice"></label>
+                @Html.DropDownList("fromPrice", new SelectList(new[] { "From:", "0", "25", "50", "75", "100", "150", "200" }, Request.QueryString["fromPrice"]))
+                @Html.DropDownList("toPrice", new SelectList(new[] { "To:", "0", "25", "50", "75", "100", "150", "200" }, Request.QueryString["toPrice"]))
+            </div>
+            if (ViewBag.FilterError != null)
+            {
+                <p style="color:red;">• @ViewBag.FilterError</p>
+            }
+            <input class="filter-button" type="submit" name="buttonType" value="Filter" />
+        }
+    </div>
+    </body>
+</html>

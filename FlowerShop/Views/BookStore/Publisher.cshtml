@@ -1,0 +1,92 @@
+﻿@model IEnumerable<FlowerShop.Models.BookEntityFramework.BOOK>
+@using System.Globalization
+@{ 
+    ViewBag.Title = "Browse by Publisher";
+    var books = ViewBag.Books as List<FlowerShop.Models.BookEntityFramework.BOOK>; 
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry's Bookstore</title>
+    <link rel="stylesheet" href="../../Content/finalstyle.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="background-image">Henry's Bookstore</h1>
+            <p class="internal-bar">For INTERNAL Use Only</p>
+        </header>
+        <div class="agrid-container">
+            <ul style="list-style: none; text-align: left; flex-shrink: inherit; background-color: silver; width: 200px; height: 150px;">
+                <li><a href="/BookStore/HomePage">Home</a></li>
+                <li><a href="/BookStore/Inventory">Browse Inventory</a></li>
+                <li><a href="/BookStore/Author">Browse Author</a></li>
+                <li><a href="/BookStore/Publisher">Browse by Publisher</a></li>
+                <li><a href="/BookStore/Location">Browse by Location</a></li>
+                <li><a href="/BookStore/Contact">Contact Management</a></li>
+            </ul>
+            <div>
+                <form method="get" action="/BookStore/Publisher">
+                    <table>
+                        <tr>
+                            <td>
+                                <select name="selectedPublisher" onchange="this.form.submit()">
+                                    <option value="">Select Publisher</option>
+                                    @foreach (var publisher in ViewBag.Publishers)
+                                    {
+
+                                      <option value="@publisher.Value" @(Request["selectedPublisher"] == publisher.Value ? "selected" : "")>
+                                        @publisher.Text
+                                      </option>
+
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+         @if (books != null && books.Any())
+          {
+            <table style="border: 1px solid #777; width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Book Code</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Paperback?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (books != null && books.Any())
+                    {
+                        foreach (var book in books)
+                        {
+                             <tr>
+                                 <td><a href="#">@book.BOOK_CODE</a></td>
+                                 <td>@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(book.TITLE)</td>
+                                 <td>@book.TYPE</td>
+                                 <td>@string.Format("{0:C}", book.PRICE)</td>
+                                 <td>@(book.PAPERBACK == "0" ? "False" : "True")</td>
+                             </tr>}
+                    }
+                    else
+                    {
+
+                    }
+
+                </tbody>
+            </table>
+            }
+              </div>
+        </div>
+        <footer>
+            <p>This page is created for educational purposes only. No images or content will be published to the internet for public use.</p>
+            <p>Book cover images were retrieved from <a href="https://www.barnesandnoble.com">Barnes and Noble</a>.</p>
+        </footer>
+    </div>
+</body>
+</html>

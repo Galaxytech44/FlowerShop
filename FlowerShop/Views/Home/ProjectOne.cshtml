@@ -1,0 +1,144 @@
+﻿@using FlowerShop.Models.EntityFramework
+@model List<FLOWER>
+@using System.Globalization
+
+@{
+    ViewBag.Title = "Home";
+    //flowerImagePathsMethod is used to get the image file path using both the name of the flower and color
+    String flowerImagePathsMethod(String FlowerName,String FlowerColor)
+    {
+        return "../images/"+FlowerColor.ToLower()+"/" + FlowerName + "/thumb.jpg";
+    }
+   
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Flower Shop Home Page</title>
+    <link rel="stylesheet" href="../../Content/projectonestyle.css">
+</head>
+<body>
+    <div class="page-body">
+        <header class="background-image">
+        </header>
+
+        <div class="nav" style="display: flex; justify-content: right; flex-wrap: wrap;">
+            <p class="nav-bar">
+                <a href="http://localhost:51403/Home/Register" style="text-decoration: underline;">Register</a>
+                <a href="http://localhost:51403/Home/Contact" style="text-decoration: underline;">Contact Us</a>
+                <a href="http://localhost:51403/Home/Legal" style="text-decoration: underline;">Legal</a>
+                <a href="http://localhost:51403/Home/AboutUs" style="text-decoration: underline;">About Us</a>
+                <a href="http://localhost:51403/Home/Index" style="text-decoration: underline;">Home</a>
+            </p>
+        </div>
+
+        <div class="container">
+
+            <h2 class="our-shop"><strong>@ViewBag.Message</strong></h2>
+            <div class="right-column">
+                <div class="search-display">
+                    @*@Html.Partial("_SearchBox")*@
+                    @Html.Partial("_FilterBox")
+
+
+                </div>
+            </div>
+
+
+            <div class="flower-category"><strong>Blue</strong></div>
+            <div class="left-column">
+                <div class="content">
+                    <div class="flower-items">
+                       
+                            @foreach (var flowers in Model.Where(f => f.COLOR.COLOR_NAME == "Blue").Take(10))
+                            {
+
+                                <div class="flower-item">
+                                    <a href="http://localhost:51403/Home/Index">
+                                        <img src=@flowerImagePathsMethod(flowers.FLOWER_NAME, flowers.COLOR.COLOR_NAME.ToLower()) alt="@flowers.FLOWER_NAME">
+                                    </a>
+                                    <p><strong>@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(flowers.FLOWER_NAME.Replace('_', ' '))</strong></p>
+                                    <ul>
+                                        <li>@flowers.COLOR.COLOR_NAME</li>
+                                        <li>@flowers.FLOWER_PRICE</li>
+                                        <li>@flowers.FLOWER_SIZE</li>
+                                        @foreach (var characteristic in flowers.CHARACTERISTICs)
+                                        {
+                                            <li>@characteristic.CHAR_DESC</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+
+                        
+                        </div>
+                </div>
+            </div>
+
+            
+            <div class="flower-category"><strong>Red</strong></div>
+            <div class="left-column">
+                <div class="content">
+                    <div class="flower-items">
+                        @foreach (var flowers in Model.Where(f => f.COLOR.COLOR_NAME == "Red").Take(6))
+                        {
+                           <div class="flower-item">
+                              <a href="http://localhost:51403/Home/Index">
+                                 <img src=@flowerImagePathsMethod(flowers.FLOWER_NAME, flowers.COLOR.COLOR_NAME.ToLower()) alt="@flowers.FLOWER_NAME">
+                              </a>
+                             <p><strong>@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(flowers.FLOWER_NAME.Replace('_', ' '))</strong></p>
+                             <ul>
+                                 <li>@flowers.COLOR.COLOR_NAME</li>
+                                 <li>@flowers.FLOWER_PRICE</li>
+                                 <li>@flowers.FLOWER_SIZE</li>
+                                 @foreach (var characteristic in flowers.CHARACTERISTICs)
+                                 {
+                                   <li>@characteristic.CHAR_DESC</li>
+                                 }
+                             </ul>
+                           </div>
+                         }
+
+
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="flower-category"><strong>Yellow</strong></div>
+            <div class="left-column">
+                <div class="content">
+                    <div class="flower-items">
+                        @foreach (var flowers in Model.Where(f => f.COLOR.COLOR_NAME == "Yellow").Take(11))
+                        {
+                           <div class="flower-item">
+                              <a href="http://localhost:51403/Home/Index">
+                                 <img src=@flowerImagePathsMethod(flowers.FLOWER_NAME, flowers.COLOR.COLOR_NAME.ToLower()) alt="@flowers.FLOWER_NAME">
+                              </a>
+                              <p><strong>@CultureInfo.CurrentCulture.TextInfo.ToTitleCase(flowers.FLOWER_NAME.Replace('_', ' '))</strong></p>
+                              <ul>
+                                  <li>@flowers.COLOR.COLOR_NAME</li>
+                                  <li>@flowers.FLOWER_PRICE</li>
+                                  <li>@flowers.FLOWER_SIZE</li>
+                                  @foreach (var characteristic in flowers.CHARACTERISTICs)
+                                  {
+                                     <li>@characteristic.CHAR_DESC</li>
+                                  }
+                              </ul>
+                           </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="footer">
+                <a href="http://localhost:51403/Home/Contact">Contact Us</a>
+            </div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+﻿@model IEnumerable<FlowerShop.Models.BookEntityFramework.BOOK>
+@using System.Globalization
+@{
+    
+    ViewBag.Title = "Contact Management Page";
+    var books = ViewBag.Books as List<FlowerShop.Models.BookEntityFramework.BOOK>;
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Henry's Bookstore</title>
+    <link rel="stylesheet" href="../../Content/finalstyle.css">
+    <style>
+        #submit-screen {
+            grid-template-columns: auto auto;
+            text-align: center;
+            background-color: white;
+            border: solid;
+            border-width: 5px;
+            border-color: #a90000;
+            padding: 20px;
+            display: none;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="background-image">Henry's Bookstore</h1>
+            <p class="internal-bar">For INTERNAL Use Only</p>
+        </header>
+        <div class="agrid-container">
+            <ul style="list-style: none; text-align: left; flex-shrink: inherit; background-color: silver; width: 200px; height: 150px;">
+                <li><a href="/BookStore/HomePage">Home</a></li>
+                <li><a href="/BookStore/Inventory">Browse Inventory</a></li>
+                <li><a href="/BookStore/Author">Browse Author</a></li>
+                <li><a href="/BookStore/Publisher">Browse by Publisher</a></li>
+                <li><a href="/BookStore/Location">Browse by Location</a></li>
+                <li><a href="/BookStore/Contact">Contact Management</a></li>
+            </ul>
+            <div class="container">
+                <h2>Share your Comments with Management</h2>
+                <form id="form">
+                    <table style="border: 1px solid #777; width: 100%;">
+                        <tr>
+                            <td><label for="firstName">First Name</label></td>
+                            <td><input type="text" id="firstName" name="firstName" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="lastName">Last Name</label></td>
+                            <td><input type="text" id="lastName" name="lastName" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email Address</label></td>
+                            <td><input type="email" id="email" name="email" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="confirmEmail">Confirm Email Address</label></td>
+                            <td><input type="email" id="confirmEmail" name="confirmEmail" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="branch">Branch</label></td>
+                            <td>
+                                <select id="branch" name="branch" required>
+                                    <option value="">Please Choose a Location</option>
+                                    <!-- Options will be dynamically inserted via JavaScript -->
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="comments">Comments</label></td>
+                            <td><textarea id="comments" name="comments" required></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="submit" id="save-btn">Save</button>
+                            </td>
+                            <td>
+                                <button type="button" id="reset-btn">Reset</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div id="submit-screen">
+                    
+                    <p>Thank you for sharing your commets with Henrys Bookstore</p>
+                    <p>Management. We will be in touch with you shortly vai email.</p>
+
+                </div>
+
+            </div>
+           
+           
+        </div>
+        <footer>
+            <p>This page is created for educational purposes only. No images or content will be published to the internet for public use.</p>
+            <p>Book cover images were retrieved from <a href="https://www.barnesandnoble.com">Barnes and Noble</a>.</p>
+        </footer>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        //branchSelect is used to get the selected branch from the drop down
+        const branchSelect = $('#branch');
+        //branches is used to hold the branches option values
+        const branches = [
+            { id: 1, name: "Henry Downtown" },
+            { id: 2, name: "Henry On The Hill" },
+            { id: 3, name: "Henry Brentwood" },
+            { id: 4, name: "Henry Eastshore" }
+        ];
+        //btanches.sort is used to sort the branch locations in aphabetical order
+        branches.sort((a, b) => a.name.localeCompare(b.name));
+        //branches.forEach is used to add the branches into the select
+        branches.forEach(branch => {
+            branchSelect.append(`<option value="${branch.id}">${branch.name}</option>`);
+        });
+        //reset-btn is the button function that once used resets all values within the form back into there original values
+        $("#reset-btn").click(function () {
+            $("#firstName, #lastName, #email, #confirmEmail, #branch, #comments").val("");
+            $(".error").remove();
+        });
+        //showError is a function which is used to get the input and message to spit out an error when needed
+        function showError(input, message) {
+            $(input).after(`<span class="error" style="color: red;">${message}</span>`);
+        }
+        //clearErrors is used to remove all errors that where in the form if the error has been fixed
+        function clearErrors() {
+            $(".error").remove();
+        }
+        //validateForm is used to see if the form can be submited
+            function validateForm() {
+            //isValid is a boolean variable to see if all requirements have been meet
+            let isValid = true;
+            clearErrors();
+             //all of the if statements are used to see if the proper requirements have been meet 
+            //for all input operations done within the form
+            if ($("#firstName").val().trim() === "") {
+                showError("#firstName", "First Name is required.");
+                isValid = false;
+            }
+            if ($("#lastName").val().trim() === "") {
+                showError("#lastName", "Last Name is required.");
+                isValid = false;
+            }
+            const email = $("#email").val().trim();
+            const confirmEmail = $("#confirmEmail").val().trim();
+            if (email === "") {
+                showError("#email", "Email is required.");
+                isValid = false;
+            }
+            if (confirmEmail === "") {
+                showError("#confirmEmail", "Confirm Email is required.");
+                isValid = false;
+            } else if (email !== confirmEmail) {
+                showError("#confirmEmail", "Email addresses do not match.");
+                isValid = false;
+            }
+            if ($("#branch").val() === "") {
+                showError("#branch", "Please select a branch.");
+                isValid = false;
+            }
+            if ($("#comments").val().trim() === "") {
+                showError("#comments", "Comments are required.");
+                isValid = false;
+            }
+            return isValid;
+        }
+
+        //validateEmail is used to check if the emailPattern is similar to the test email
+        function validateEmail(email) {
+            return emailPattern.test(email);
+        }
+        //save-btn button function is used to show the submit-screen when the form is submited and hides the form
+        $("#save-btn").click(function (e) {
+            e.preventDefault(); 
+            if (validateForm()) {
+                $('#submit-screen').show();
+                $('#form').hide();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
+
+

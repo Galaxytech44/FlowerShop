@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FLOWERSHOPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CHARACTERISTIC">
+          <Key>
+            <PropertyRef Name="CHAR_ID" />
+          </Key>
+          <Property Name="CHAR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CHAR_DESC" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COLOR">
+          <Key>
+            <PropertyRef Name="COLOR_ID" />
+          </Key>
+          <Property Name="COLOR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COLOR_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FLOWER">
+          <Key>
+            <PropertyRef Name="FLOWER_ID" />
+          </Key>
+          <Property Name="FLOWER_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FLOWER_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="COLOR_ID" Type="int" Nullable="false" />
+          <Property Name="FLOWER_SIZE" Type="varchar" MaxLength="10" />
+          <Property Name="FLOWER_PRICE" Type="int" />
+        </EntityType>
+        <EntityType Name="FLOWER_CHAR">
+          <Key>
+            <PropertyRef Name="FLOWER_ID" />
+            <PropertyRef Name="CHAR_ID" />
+          </Key>
+          <Property Name="FLOWER_ID" Type="int" Nullable="false" />
+          <Property Name="CHAR_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FLOWER_CHAR_CHARACTERISTIC">
+          <End Role="CHARACTERISTIC" Type="Self.CHARACTERISTIC" Multiplicity="1" />
+          <End Role="FLOWER_CHAR" Type="Self.FLOWER_CHAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CHARACTERISTIC">
+              <PropertyRef Name="CHAR_ID" />
+            </Principal>
+            <Dependent Role="FLOWER_CHAR">
+              <PropertyRef Name="CHAR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FLOWER_CHAR_FLOWER">
+          <End Role="FLOWER" Type="Self.FLOWER" Multiplicity="1" />
+          <End Role="FLOWER_CHAR" Type="Self.FLOWER_CHAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FLOWER">
+              <PropertyRef Name="FLOWER_ID" />
+            </Principal>
+            <Dependent Role="FLOWER_CHAR">
+              <PropertyRef Name="FLOWER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FLOWER_COLOR">
+          <End Role="COLOR" Type="Self.COLOR" Multiplicity="1" />
+          <End Role="FLOWER" Type="Self.FLOWER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COLOR">
+              <PropertyRef Name="COLOR_ID" />
+            </Principal>
+            <Dependent Role="FLOWER">
+              <PropertyRef Name="COLOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FLOWERSHOPModelStoreContainer">
+          <EntitySet Name="CHARACTERISTIC" EntityType="Self.CHARACTERISTIC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COLOR" EntityType="Self.COLOR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FLOWER" EntityType="Self.FLOWER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FLOWER_CHAR" EntityType="Self.FLOWER_CHAR" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FLOWER_CHAR_CHARACTERISTIC" Association="Self.FK_FLOWER_CHAR_CHARACTERISTIC">
+            <End Role="CHARACTERISTIC" EntitySet="CHARACTERISTIC" />
+            <End Role="FLOWER_CHAR" EntitySet="FLOWER_CHAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FLOWER_CHAR_FLOWER" Association="Self.FK_FLOWER_CHAR_FLOWER">
+            <End Role="FLOWER" EntitySet="FLOWER" />
+            <End Role="FLOWER_CHAR" EntitySet="FLOWER_CHAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FLOWER_COLOR" Association="Self.FK_FLOWER_COLOR">
+            <End Role="COLOR" EntitySet="COLOR" />
+            <End Role="FLOWER" EntitySet="FLOWER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FLOWERSHOPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CHARACTERISTIC">
+          <Key>
+            <PropertyRef Name="CHAR_ID" />
+          </Key>
+          <Property Name="CHAR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CHAR_DESC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FLOWERs" Relationship="Self.FLOWER_CHAR" FromRole="CHARACTERISTIC" ToRole="FLOWER" />
+        </EntityType>
+        <EntityType Name="COLOR">
+          <Key>
+            <PropertyRef Name="COLOR_ID" />
+          </Key>
+          <Property Name="COLOR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COLOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FLOWERs" Relationship="Self.FK_FLOWER_COLOR" FromRole="COLOR" ToRole="FLOWER" />
+        </EntityType>
+        <EntityType Name="FLOWER">
+          <Key>
+            <PropertyRef Name="FLOWER_ID" />
+          </Key>
+          <Property Name="FLOWER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FLOWER_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COLOR_ID" Type="Int32" Nullable="false" />
+          <Property Name="FLOWER_SIZE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="FLOWER_PRICE" Type="Int32" />
+          <NavigationProperty Name="COLOR" Relationship="Self.FK_FLOWER_COLOR" FromRole="FLOWER" ToRole="COLOR" />
+          <NavigationProperty Name="CHARACTERISTICs" Relationship="Self.FLOWER_CHAR" FromRole="FLOWER" ToRole="CHARACTERISTIC" />
+        </EntityType>
+        <Association Name="FK_FLOWER_COLOR">
+          <End Role="COLOR" Type="Self.COLOR" Multiplicity="1" />
+          <End Role="FLOWER" Type="Self.FLOWER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COLOR">
+              <PropertyRef Name="COLOR_ID" />
+            </Principal>
+            <Dependent Role="FLOWER">
+              <PropertyRef Name="COLOR_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FLOWER_CHAR">
+          <End Role="CHARACTERISTIC" Type="Self.CHARACTERISTIC" Multiplicity="*" />
+          <End Role="FLOWER" Type="Self.FLOWER" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="FLOWERSHOPEntitiess" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CHARACTERISTICs" EntityType="Self.CHARACTERISTIC" />
+          <EntitySet Name="COLORs" EntityType="Self.COLOR" />
+          <EntitySet Name="FLOWERs" EntityType="Self.FLOWER" />
+          <AssociationSet Name="FK_FLOWER_COLOR" Association="Self.FK_FLOWER_COLOR">
+            <End Role="COLOR" EntitySet="COLORs" />
+            <End Role="FLOWER" EntitySet="FLOWERs" />
+          </AssociationSet>
+          <AssociationSet Name="FLOWER_CHAR" Association="Self.FLOWER_CHAR">
+            <End Role="CHARACTERISTIC" EntitySet="CHARACTERISTICs" />
+            <End Role="FLOWER" EntitySet="FLOWERs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FLOWERSHOPModelStoreContainer" CdmEntityContainer="FLOWERSHOPEntitiess">
+          <EntitySetMapping Name="CHARACTERISTICs">
+            <EntityTypeMapping TypeName="FLOWERSHOPModel.CHARACTERISTIC">
+              <MappingFragment StoreEntitySet="CHARACTERISTIC">
+                <ScalarProperty Name="CHAR_ID" ColumnName="CHAR_ID" />
+                <ScalarProperty Name="CHAR_DESC" ColumnName="CHAR_DESC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COLORs">
+            <EntityTypeMapping TypeName="FLOWERSHOPModel.COLOR">
+              <MappingFragment StoreEntitySet="COLOR">
+                <ScalarProperty Name="COLOR_ID" ColumnName="COLOR_ID" />
+                <ScalarProperty Name="COLOR_NAME" ColumnName="COLOR_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FLOWERs">
+            <EntityTypeMapping TypeName="FLOWERSHOPModel.FLOWER">
+              <MappingFragment StoreEntitySet="FLOWER">
+                <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
+                <ScalarProperty Name="FLOWER_NAME" ColumnName="FLOWER_NAME" />
+                <ScalarProperty Name="COLOR_ID" ColumnName="COLOR_ID" />
+                <ScalarProperty Name="FLOWER_SIZE" ColumnName="FLOWER_SIZE" />
+                <ScalarProperty Name="FLOWER_PRICE" ColumnName="FLOWER_PRICE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FLOWER_CHAR" TypeName="FLOWERSHOPModel.FLOWER_CHAR" StoreEntitySet="FLOWER_CHAR">
+            <EndProperty Name="CHARACTERISTIC">
+              <ScalarProperty Name="CHAR_ID" ColumnName="CHAR_ID" />
+            </EndProperty>
+            <EndProperty Name="FLOWER">
+              <ScalarProperty Name="FLOWER_ID" ColumnName="FLOWER_ID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
